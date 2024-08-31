@@ -13,18 +13,18 @@
       "url": "https://www.linkedin.com/in/hamid-abderrahim/"
     }
   ],
+  "homepage": "https://github.com/said-faraj/BreezeDB",
+  "keywords": ["json", "database", "nodejs", "electron", "lightweight", "nosql", "query", "db"],
   "main": "index.js",
   "description": "BreezeDB: a lightweight, JSON-based database for Node.js and Electron.js with flexible querying.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/breezedb.git"
+    "url": "git+https://github.com/said-faraj/BreezeDB.git"
   },
-  "keywords": ["json", "database", "nodejs"],
   "dependencies": {
     "async-lock": "^1.4.1"
   }
