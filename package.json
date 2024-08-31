@@ -1,13 +1,25 @@
 {
   "name": "breezedb",
   "version": "1.0.0",
+  "author": {
+    "name": "Said Faraj",
+    "email": "s.faraj1997@gmail.com",
+    "url": "https://www.linkedin.com/in/said-faraj"
+  },
+  "contributors": [
+    {
+      "name": "HAMID ABDERRAHIM",
+      "email": "micdook@gmail.com",
+      "url": "https://www.linkedin.com/in/hamid-abderrahim/"
+    }
+  ],
   "main": "index.js",
+  "description": "BreezeDB: a lightweight, JSON-based database for Node.js and Electron.js with flexible querying.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  
   "license": "MIT",
-  "description": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yourusername/breezedb.git"
