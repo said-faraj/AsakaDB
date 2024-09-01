@@ -81,6 +81,34 @@ new BreezeDB(dataBase, tableName, [filesSize])
 - **tableName**: `string` - The name of the table (subdirectory) within the database.
 - **filesSize**:`number` (optional) - The maximum size (in bytes) for each file before a new file is created. Defaults to 3,000,000 bytes.
 
+### Methods
+
+#### insert
+
+Inserts a single object or an array of objects into the database.
+
+- **Parameters:**
+  - **data:** `object` or `array` - The data to be inserted.
+- **returns:** `boolean` Returns `true` if the data was inserted successfully, otherwise `false`.
+
+- **Example:**
+```javascript
+// insert one element
+db.insert({ id: 1, name: 'John Doe', age: 30 });
+// insert many elements
+data = [
+  { id: 1, name: 'user name 1', age: 30 },
+  { id: 2, name: 'user name 2', age: 25 },
+  { id: 3, name: 'user name 3', age: 50 }
+]
+db.insert(data);
+```
+
+
+
+
+
+
 
 
 
