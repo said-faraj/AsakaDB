@@ -182,7 +182,7 @@ class BreezeDB {
    * @param {Object} qdata - The data passed to the query function.
    * @returns {Object|boolean} - Returns the existing record if found, otherwise false.
    */
-  insertIfNotExist(data, query, qdata) {
+  insertIfNotExist(data, query, qdata={}) {
     const result = this.getOne(query, qdata);
     if (result) return false;
     this.insert(data);

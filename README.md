@@ -88,26 +88,58 @@ new BreezeDB(dataBase, tableName, [filesSize])
 Inserts a single object or an array of objects into the database.
 
 - **Parameters:**
-  - **data:** `object` or `array` - The data to be inserted.
+  - ***`data:`*** `object` or `array` - The data to be inserted.
 - **returns:** `boolean` Returns `true` if the data was inserted successfully, otherwise `false`.
 
 - **Example:**
 ```javascript
 // insert one element
-db.insert({ id: 1, name: 'John Doe', age: 30 });
+db.insert({ id: 1, name: 'John Doe', age: 30 }); // return true
+
 // insert many elements
 data = [
   { id: 1, name: 'user name 1', age: 30 },
   { id: 2, name: 'user name 2', age: 25 },
   { id: 3, name: 'user name 3', age: 50 }
 ]
-db.insert(data);
+db.insert(data); // return true
 ```
 
+#### insertIfNotExist
+Inserts data only if it doesn't already exist based on a provided query function and data.
+- **Parameters:**
+  - ***`data`***: `object` - The data to be inserted.
+  - ***`query`***: `function` - A function that checks for existing records. It takes two parameters: *`data`* and *`qdata`*. *`data`* is the stored record, and *`qdata`* is the data passed to the query function to check for records.
+  - ***`qdata`*** (optional): `object` - Additional data to be passed to the query function.
+- **returns:** `boolean` Returns `true` if the data was inserted successfully, return `false` if data already exists.
+- **Example:**
 
+```javascript
+db.insertIfNotExist({ id: 1, name: 'John Doe', age: 30 }, user => user.id === 1);
+// Alternatively, you can pass data and a custom query function
 
+// Example: Inserting a new user with ID 5 (if it doesn't exist)
+const data = { id: 5, name: 'John Doe', age: 30 };
+const query = (user, qdata) => user.id === qdata.id;
+const qdata = { id: 5 };
 
+db.insertIfNotExist(data, query, qdata); // return true, This will insert the user
 
+// Example: Checking if a user with ID 5 exists
+db.insertIfNotExist(data, query, qdata); // return false,This will not insert (user already exists)
+```
+
+### get
+Retrieves data based on a query function and optional options for sorting, limiting, and filtering.
+
+- **Parameters:**
+  - ***`query`***: `function` - A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
+  - ***`toSort`*** _(optional)_: `string` - The field to sort the results by.
+  - ***`reverse`*** _(optional)_: `boolean` - Whether to reverse the sorting order.
+  - ***`from`*** _(optional)_: `number` - The starting index for the results.
+  - ***`limit`*** _(optional)_: `number` - The maximum number of results to return.
+  - ***`data`*** _(optional)_: `object` - Additional data to be passed to the query function.
+- **returns:** `array` - an array of matching records
 
 
 
