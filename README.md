@@ -141,6 +141,11 @@ Retrieves data based on a query function and optional options for sorting, limit
   - ***`data`*** _(optional)_: `object` - Additional data to be passed to the query function.
 - **returns:** `array` - an array of matching records
 
+- **Example:**
+
+```javascript
+db.get(data => true); // return all records
+```
 
 
 
