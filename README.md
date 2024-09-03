@@ -144,7 +144,30 @@ Retrieves data based on a query function and optional options for sorting, limit
 - **Example:**
 
 ```javascript
+db.get(); // return all records
 db.get(data => true); // return all records
+db.get((user) => user.id == 1); // return  [ { id: 1, name: 'Said', age: 5 } ]
+// if i want to pass data to query
+var qdata = {id: 2};
+var query= (user, data) => user.id == data.id;
+db.get(query=query, {data:qdata}); // return [{ id: 2, name: 'Said', age: 6 }]
+
+// if i want to get all users tha have age more than 30 and under 36
+var qdata = {min: 30, max:36};
+var query= function(user, data){
+    return (user.age >= data.min && user.age <= data.max);
+};
+db.get(query=query, {data:qdata});
+/*return
+[
+  { id: 26, name: 'Said', age: 30 },
+  { id: 27, name: 'Said', age: 31 },
+  { id: 28, name: 'Said', age: 32 },
+  { id: 29, name: 'Said', age: 33 },
+  { id: 30, name: 'Said', age: 34 }
+]
+*/
+
 ```
 
 

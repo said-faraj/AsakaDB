@@ -203,6 +203,7 @@ class BreezeDB {
   get(query, { toSort = null, reverse = false, from = 0, limit = Infinity, data={} } = {}) {
 
     if (!typeof limit == 'number' || limit <= 0) assert(false, "limit error");
+    if (!query) query = (data) => true;
     // get all data with the option to sort it
     if(query && from === 0 && limit === Infinity){
       return this.#_getall(query, {toSort: toSort, reverse: reverse, data:data});
