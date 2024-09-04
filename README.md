@@ -134,11 +134,12 @@ Retrieves data based on a query function and optional options for sorting, limit
 
 - **Parameters:**
   - ***`query`***: `function` - A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
-  - ***`toSort`*** _(optional)_: `string` - The field to sort the results by.
-  - ***`reverse`*** _(optional)_: `boolean` - Whether to reverse the sorting order.
-  - ***`from`*** _(optional)_: `number` - The starting index for the results.
-  - ***`limit`*** _(optional)_: `number` - The maximum number of results to return.
-  - ***`data`*** _(optional)_: `object` - Additional data to be passed to the query function.
+  - ***`options`*** _(optional)_: `object` - An object containing the following optional properties:
+    - ***`toSort`*** _(optional)_: `string` - The field to sort the results by.
+    - ***`reverse`*** _(optional)_: `boolean` - Whether to reverse the sorting order.
+    - ***`from`*** _(optional)_: `number` - The starting index for the results.
+    - ***`limit`*** _(optional)_: `number` - The maximum number of results to return.
+    - ***`data`*** _(optional)_: `object` - Additional data to be passed to the query function.
 - **returns:** `array` - an array of matching records
 
 - **Example:**
