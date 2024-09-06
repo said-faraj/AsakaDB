@@ -1,5 +1,5 @@
 {
-  "name": "breezedb",
+  "name": "asakadb",
   "version": "1.0.0",
   "author": {
     "name": "Said Faraj",
@@ -13,17 +13,17 @@
       "url": "https://www.linkedin.com/in/hamid-abderrahim/"
     }
   ],
-  "homepage": "https://github.com/said-faraj/BreezeDB",
+  "homepage": "https://github.com/said-faraj/AsakaDB",
   "keywords": ["json", "database", "nodejs", "electron", "lightweight", "nosql", "query", "db"],
   "main": "index.js",
-  "description": "BreezeDB: a lightweight, JSON-based database for Node.js and Electron.js with flexible querying.",
+  "description": "AsakaDB: a lightweight, JSON-based database for Node.js and Electron.js with flexible querying.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/said-faraj/BreezeDB.git"
+    "url": "git+https://github.com/said-faraj/AsakaDB.git"
   },
   "dependencies": {
     "async-lock": "^1.4.1"
