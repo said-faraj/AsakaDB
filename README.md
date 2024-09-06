@@ -1,9 +1,11 @@
-# BreezeDB
+# AsakaDB
 
+[![npm version](https://badge.fury.io/js/AsakaDB.svg)](https://badge.fury.io/js/AsakaDB)
 
 ## Introduction
 
-**BreezeDB** is a lightweight, fast, and flexible JSON-based database designed to handle multiple requests and threads simultaneously while consuming minimal RAM. Perfectly suited for small server environments, Electron.js applications, and projects where simplicity and efficiency are key. BreezeDB offers a straightforward API that requires no prior knowledge of SQL or complex database languages, making it accessible to developers of all skill levels.
+**AsakaDB** is a lightweight, fast, and flexible JSON-based database designed to handle multiple requests and threads simultaneously while consuming minimal RAM. Perfectly suited for small server environments, Electron.js applications, and projects where simplicity and efficiency are key. AsakaDB offers a straightforward API that requires no prior knowledge of SQL or complex database languages, making it accessible to developers of all skill levels.
+
 
 ## Table of Contents
 
@@ -29,26 +31,26 @@
 - **Simple Setup**: No need to learn complex database languages. Start storing data immediately with a few lines of code.
 - **Thread-Safe Operations**: Handles multiple threads and concurrent requests effortlessly, ensuring data integrity.
 - **Dynamic Querying**: Break free from the limitations of traditional databases with our flexible and powerful query capabilities using callbacks. Tailor custom queries to your specific needs, without any limitations.
-- **Low Resource Consumption**: Optimized for low-RAM environments, BreezeDB is perfect for small server configurations.
+- **Low Resource Consumption**: Optimized for low-RAM environments, AsakaDB is perfect for small server configurations.
 - **Scalable File Management**: Automatically manages large data sets by splitting them into multiple files to avoid performance degradation.
 - **Minimal Dependencies**: Built with minimal dependencies, keeping your project lightweight and fast.
 
 ## Installation
 
-You can install BreezeDB via npm:
+You can install AsakaDB via npm:
 
 ```bash
-npm install breezedb
+npm install AsakaDB
 ```
 
 ## Usage
-Here's a basic example demonstrating how to use BreezeDB:
+Here's a basic example demonstrating how to use AsakaDB:
 
 ```javascript
-const BreezeDB = require('breezedb');
+const AsakaDB = require('AsakaDB');
 
 // Initialize the database
-const db = new BreezeDB('path/to/database_folder', 'users_table');
+const db = new AsakaDB('path/to/database_folder', 'users_table');
 
 // Insert data
 db.insert({ id: 1, name: 'John Doe', age: 30 });
@@ -74,7 +76,7 @@ const randomUser = db.getRandom(user => user.age > 20, 1);
 ### Constructor
 
 ```javascript
-new BreezeDB(dataBase, tableName, [filesSize])
+new AsakaDB(dataBase, tableName, [filesSize])
 ```
 
 - **dataBase**: `string` - The path to the database directory.
@@ -284,19 +286,11 @@ db.getRandom(user => user.age > 20, 2); // Returns 2 random records where age is
 
 ## Dependencies
 
-BreezeDB has minimal dependencies:
+AsakaDB has minimal dependencies:
 - **fs**: Node.js built-in module for file system operations.
 - **path**: Node.js built-in module for working with file and directory paths.
 - **async-lock**: A simple asynchronous locking mechanism.
 
 ## License
-BreezeDB is licensed under the MIT License.
+AsakaDB is licensed under the MIT License.
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-
-
-
-
-
-
-[![npm version](https://badge.fury.io/js/breezedb.svg)](https://badge.fury.io/js/breezedb)

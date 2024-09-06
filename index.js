@@ -6,9 +6,9 @@ const lock = new AsyncLock();
  
 
 /**
- * BreezeDB class for managing a simple JSON-based database.
+ * AsakaDB class for managing a simple JSON-based database.
  */
-class BreezeDB {
+class AsakaDB {
   #filesSize;
   #dataBaseName;
   #tableName;
@@ -19,7 +19,7 @@ class BreezeDB {
   #lock
 
   /**
-   * Creates an instance of BreezeDB.
+   * Creates an instance of AsakaDB.
    * 
    * @param {string} dataBase - The path to the database directory.
    * @param {string} tableName - The name of the table (subdirectory) within the database.
@@ -534,4 +534,4 @@ class BreezeDB {
 }
 
 
-module.exports = BreezeDB;
+module.exports = AsakaDB;
