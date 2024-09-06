@@ -197,33 +197,33 @@ class BreezeDB {
    * @param {boolean} [options.reverse=false] - Whether to reverse the sorting order.
    * @param {number} [options.from=0] - The starting index for the results.
    * @param {number} [options.limit=Infinity] - The maximum number of results to return.
-   * @param {Object} [options.data={}] - Additional data passed to the query function.
+   * @param {Object} [options.qdata={}] - Additional data passed to the query function.
    * @returns {Object[]} - Returns an array of matched records.
    */
-  get(query, { toSort = null, reverse = false, from = 0, limit = Infinity, data={} } = {}) {
+  get(query, { toSort = null, reverse = false, from = 0, limit = Infinity, qdata={} } = {}) {
 
     if (!typeof limit == 'number' || limit <= 0) assert(false, "limit error");
     if (!query) query = (data) => true;
     // get all data with the option to sort it
     if(query && from === 0 && limit === Infinity){
-      return this.#_getall(query, {toSort: toSort, reverse: reverse, data:data});
+      return this.#_getall(query, {toSort: toSort, reverse: reverse, qdata:qdata});
     }
     else if(query && (from >= 0 || limit>0) && toSort){
-      return this.#_getSortedLimit(query, {toSort: toSort, reverse :reverse, from: from, limit: limit, data:data})
+      return this.#_getSortedLimit(query, {toSort: toSort, reverse :reverse, from: from, limit: limit, qdata:qdata})
     }
     else if(query && (from > 0 || limit != Infinity)){
-      return this.#_getChunk(query, {reverse: reverse, from: from, limit: limit, data:data});
+      return this.#_getChunk(query, {reverse: reverse, from: from, limit: limit, qdata:qdata});
     }
   }
 
-  #_getall(query, { toSort = null, reverse = false, data={} } = {}){
+  #_getall(query, { toSort = null, reverse = false, qdata={} } = {}){
     let result = [];
     for (const file of this.#_filesOfTable()) {
       const filePath = path.join(this.#tablePath, file.file_name);
       this.#lock.acquire(filePath, (done) => {
         for (const line of this.#_readLines(filePath)) {
           const jsonLine = JSON.parse(line);
-          if (query(jsonLine, data)) result.push(jsonLine);
+          if (query(jsonLine, qdata)) result.push(jsonLine);
         }
         done(null, true);
       });
@@ -232,7 +232,7 @@ class BreezeDB {
     return toSort ? result.sort((a, b) => (reverse ? b[toSort] - a[toSort] : a[toSort] - b[toSort])) : result;
   }
   // get chunk of data
-  #_getChunk(query, {reverse=false, from= 0, limit= Infinity, data={}} = {}){
+  #_getChunk(query, {reverse=false, from= 0, limit= Infinity, qdata={}} = {}){
     let result = [];
     let chunckToDelete = from;
     for (const file of this.#_filesOfTable()) {
@@ -241,7 +241,7 @@ class BreezeDB {
       this.#lock.acquire(filePath, (done) => {
         for (const line of this.#_readLines(filePath)) {
           const jsonLine = JSON.parse(line);
-          if (query(jsonLine, data)) {
+          if (query(jsonLine, qdata)) {
             if(chunckToDelete == 0){
               if(result.length < limit)result.push(jsonLine);
               else{
@@ -259,7 +259,7 @@ class BreezeDB {
     }
     return result;
   }
-  #_getSortedLimit(query, { toSort = null, reverse = false, from = 0, limit = Infinity, data={} } = {}) {
+  #_getSortedLimit(query, { toSort = null, reverse = false, from = 0, limit = Infinity, qdata={} } = {}) {
     let topElements = [];
     const ascending = !reverse;
     const to = from + limit;
@@ -275,7 +275,7 @@ class BreezeDB {
           const jsonObject = JSON.parse(line.trim());
     
           // Check if the line matches the query
-          if (query(jsonObject, data)) {
+          if (query(jsonObject, qdata)) {
             // Find the correct position to insert the JSON object
             let insertPos = 0;
             while (insertPos < topElements.length && 
@@ -303,17 +303,17 @@ class BreezeDB {
    * Counts the number of records that match the query.
    * 
    * @param {Function} query - A function that filters the data.
-   * @param {Object} [data={}] - Additional data passed to the query function.
+   * @param {Object} [qdata={}] - Additional data passed to the query function.
    * @returns {number} - The number of matched records.
    */
-  count(query, data={}){
+  count(query, qdata={}){
     let resultCount = 0;
     for (const file of this.#_filesOfTable()) {
       const filePath = path.join(this.#tablePath, file.file_name);
       this.#lock.acquire(filePath, (done) => {
         for (const line of this.#_readLines(filePath)) {
           const jsonLine = JSON.parse(line);
-          if (query(jsonLine, data)) resultCount++;
+          if (query(jsonLine, qdata)) resultCount++;
         }
         done(null, 1);
       });
@@ -324,10 +324,10 @@ class BreezeDB {
    * Retrieves the first record that matches the query.
    * 
    * @param {Function} query - A function that filters the data.
-   * @param {Object} data - Additional data passed to the query function.
+   * @param {Object} qdata - Additional data passed to the query function.
    * @returns {Object|null} - The first matched record, or null if no match is found.
    */
-  getOne(query, data) {
+  getOne(query, qdata) {
     var result = null;
     for (const file of this.#_filesOfTable()) {
       const filePath = path.join(this.#tablePath, file.file_name);
@@ -335,7 +335,7 @@ class BreezeDB {
       this.#lock.acquire(filePath, (done) => {
         for (const line of this.#_readLines(filePath)) {
           const jsonLine = JSON.parse(line);
-          if (query(jsonLine, data)){
+          if (query(jsonLine, qdata)){
             result = jsonLine;
             done(null, 1);
             return jsonLine;
@@ -352,10 +352,10 @@ class BreezeDB {
    * 
    * @param {Function} query - A function that filters the data.
    * @param {Function} updater - A function that applies updates to the matched records.
-   * @param {Object} [data={}] - Additional data passed to the updater function.
+   * @param {Object} [qdata={}] - Additional data passed to the updater function.
    * @param {Object} updatedata - The data to update in the matched records.
    */
-  update(query, updater, data = {}, updatedata) {
+  update(query, updater, qdata = {}, updatedata = {}) {
     var is_updated = false;
     for (const file of this.#_filesOfTable()) {
       const filePath = path.join(this.#tablePath, file.file_name);
@@ -364,9 +364,9 @@ class BreezeDB {
       this.#lock.acquire(filePath, (done) => {
         for (const line of this.#_readLines(filePath)) {
           const jsonLine = JSON.parse(line);
-          if (query(jsonLine, updatedata)) {
+          if (query(jsonLine, qdata)) {
             updated = true;
-            newContent += JSON.stringify(updater(jsonLine, data)) + '\n';
+            newContent += JSON.stringify(updater(jsonLine, updatedata)) + '\n';
           } else {
             newContent += line + '\n';
           }
@@ -387,9 +387,9 @@ class BreezeDB {
    * Deletes records from the database that match the query.
    * 
    * @param {Function} query - A function that filters the data.
-   * @param {Object} data - Additional data passed to the query function.
+   * @param {Object} qdata - Additional data passed to the query function.
    */
-  delete(query, data) {
+  delete(query, qdata) {
     var is_deleted = false;
 
     for (const file of this.#_filesOfTable()) {
@@ -399,7 +399,7 @@ class BreezeDB {
 
       this.#lock.acquire(filePath, (done) => {
         for (const line of this.#_readLines(filePath)) {
-          if (!query(JSON.parse(line), data)) {
+          if (!query(JSON.parse(line), qdata)) {
             newContent += line + '\n';
           }
           else{
@@ -470,11 +470,11 @@ class BreezeDB {
    * 
    * @param {Function} query - A function that filters the data.
    * @param {number} [limit=1] - The number of random records to retrieve.
-   * @param {Object} [data={}] - Additional data passed to the query function.
+   * @param {Object} [qdata={}] - Additional data passed to the query function.
    * @returns {Object[]} - An array of randomly selected matched records.
    * @throws {Error} - Throws an error if the limit is not a positive number.
    */
-  getRandom(query, limit = 1, data = {}) {
+  getRandom(query, limit = 1, qdata = {}) {
     if (typeof limit !== 'number' || limit <= 0) {
       throw new Error('Limit must be a positive number');
     }
@@ -502,7 +502,7 @@ class BreezeDB {
       this.#lock.acquire(filePath, (done)=>{
         for (const line of this.#_readLines(filePath)) {
           const jsonLine = JSON.parse(line);
-          if (query(jsonLine, data)) {
+          if (query(jsonLine, qdata)) {
             matchedRecords.push(jsonLine);
           }
         }

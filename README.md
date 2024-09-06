@@ -139,7 +139,7 @@ Retrieves data based on a query function and optional options for sorting, limit
     - ***`reverse`*** _(optional)_: `boolean` - Whether to reverse the sorting order.
     - ***`from`*** _(optional)_: `number` - The starting index for the results.
     - ***`limit`*** _(optional)_: `number` - The maximum number of results to return.
-    - ***`data`*** _(optional)_: `object` - Additional data to be passed to the query function.
+    - ***`qdata`*** _(optional)_: `object` - Additional data to be passed to the query function.
 - **returns:** `array` - an array of matching records
 
 - **Example:**
@@ -151,14 +151,14 @@ db.get((user) => user.id == 1); // return  [ { id: 1, name: 'Said', age: 5 } ]
 // if i want to pass data to query
 var qdata = {id: 2};
 var query= (user, data) => user.id == data.id;
-db.get(query=query, {data:qdata}); // return [{ id: 2, name: 'Said', age: 6 }]
+db.get(query=query, {qdata:qdata}); // return [{ id: 2, name: 'Said', age: 6 }]
 
 // if i want to get all users tha have age more than 30 and under 36
 var qdata = {min: 30, max:36};
 var query= function(user, data){
     return (user.age >= data.min && user.age <= data.max);
 };
-db.get(query=query, {data:qdata});
+db.get(query=query, {qdata:qdata});
 /*return
 [
   { id: 26, name: 'Said', age: 30 },
@@ -168,13 +168,120 @@ db.get(query=query, {data:qdata});
   { id: 30, name: 'Said', age: 34 }
 ]
 */
+db.get(query=query, {qdata:qdata, toSort:'age', reverse:true})
+/* return
+[
+  { id: 30, name: 'Said', age: 34 },
+  { id: 29, name: 'Said', age: 33 },
+  { id: 28, name: 'Said', age: 32 },
+  { id: 27, name: 'Said', age: 31 },
+  { id: 26, name: 'Said', age: 30 }
+]
+*/
 
+db.get(query=query, {qdata:qdata, toSort:'age', reverse:true, from:2, limit:3})
+
+/* return
+[
+  { id: 28, name: 'Said', age: 32 },
+  { id: 27, name: 'Said', age: 31 },
+  { id: 26, name: 'Said', age: 30 }
+]
+*/
 ```
+### getOne
+Retrieves the first record that matches a query.
+- **Parameters:**
+  - ***`query`***: `function` -  A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
+  - ***`qdata`*** _(optional)_: `object` - Additional data to be passed to the query function
+- **returns:** `object|null` - The first matching record, or null if no match is found.
+
+- **Example:**
+
+```javascript
+db.getOne(user => user.id === 1); // Returns the record with id 1
+// or
+db.getOne(user => user.id === qdata.id, qdata={id:1}); // Returns the record with id 1
+```
+
+
+### update
+Updates records based on a query function and an updater function.
+
+- **Parameters:**
+  - ***`query`***: `function` -  A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
+  - ***`updater`***: `function` - A function that takes a data object and (optional) `updatedata` as arguments and returns the updated data.
+  - ***`qdata`*** _(optional)_: `object` - Additional data to be passed to the `query` function.
+  - ***`updatedata`*** _(optional)_: `object` - Additional data to be passed to the `updater` function.
+- **returns:** `boolean` - Returns true if any records were updated, otherwise false.
+
+- **Example:**
+
+```javascript
+db.update(user => user.id === 1, user => ({ ...user, age: 32 })); // Updates the record with id 1 to have age 32
+```
+
+### delete
+Deletes records based on a query function.
+
+- **Parameters:**
+  - ***`query`***: `function` -  A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
+  - ***`qdata`*** _(optional)_: `object` - Additional data to be passed to the `query` function.
+- **returns:** `boolean` - Returns `true` if any records were deleted, otherwise `false`.
+
+- **Example:**
+
+```javascript
+db.delete(user => user.id === 1); // Deletes the record with id 1
+```
+
+
+### count
+Counts the number of records that match a query.
+
+- **Parameters:**
+  - ***`query`***: `function` -  A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
+  - ***`qdata`*** _(optional)_: `object` - Additional data to be passed to the `query` function.
+- **returns:** `number` - The number of matching records.
+
+- **Example:**
+
+```javascript
+db.count(user => user.age > 20); // Returns the number of records where age is greater than 20
+```
+
+
+
+### getRandom
+Retrieves a random set of records that match a query.
+
+- **Parameters:**
+  - ***`query`***: `function` - A function that takes a data object and (optional) `qdata` as arguments and returns true if the data matches the criteria.
+  - ***`limit`*** _(optional)_: `number` - The number of random records to retrieve.
+  - ***`qdata`*** _(optional)_: `object` - Additional data to be passed to the `query` function.
+- **returns:** `array` - An array of randomly selected matching records.
+
+- **Example:**
+
+```javascript
+db.getRandom(user => user.age > 20, 2); // Returns 2 random records where age is greater than 20
+```
+
+## Dependencies
+
+BreezeDB has minimal dependencies:
+- **fs**: Node.js built-in module for file system operations.
+- **path**: Node.js built-in module for working with file and directory paths.
+- **async-lock**: A simple asynchronous locking mechanism.
+
+## License
+BreezeDB is licensed under the MIT License.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 
 
 
 
 
 [![npm version](https://badge.fury.io/js/breezedb.svg)](https://badge.fury.io/js/breezedb)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
