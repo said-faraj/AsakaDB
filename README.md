@@ -1,6 +1,6 @@
 # AsakaDB
 
-[![npm version](https://badge.fury.io/js/AsakaDB.svg)](https://badge.fury.io/js/AsakaDB)
+[![npm version](https://badge.fury.io/js/AsakaDB.svg)](https://www.npmjs.com/package/AsakaDB)
 
 ## Introduction
 
