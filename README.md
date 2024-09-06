@@ -40,7 +40,7 @@
 You can install AsakaDB via npm:
 
 ```bash
-npm install AsakaDB
+npm install asakadb
 ```
 
 ## Usage
