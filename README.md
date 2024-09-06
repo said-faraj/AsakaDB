@@ -220,6 +220,20 @@ Updates records based on a query function and an updater function.
 
 ```javascript
 db.update(user => user.id === 1, user => ({ ...user, age: 32 })); // Updates the record with id 1 to have age 32
+
+// or
+var updtdata = {age: 40};
+var qdata = {id:14};
+var query= function(user, data){
+    return user.id === data.id;
+}
+var qupdater = function(data, updtdata){
+    data.age = updtdata.age;
+    return data
+}
+// record befor update => { id: 14, name: 'Said', age: 18 }
+db.update(query=query, updater=qupdater, qdata=qdata, updatedata=updtdata);
+// after => { id: 14, name: 'Said', age: 40 }
 ```
 
 ### delete
