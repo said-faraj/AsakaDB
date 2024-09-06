@@ -205,6 +205,7 @@ db.getOne(user => user.id === qdata.id, qdata={id:1}); // Returns the record wit
 ```
 
 
+
 ### update
 Updates records based on a query function and an updater function.
 
